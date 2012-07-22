@@ -7,13 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FBConnect.h"
 
-@interface chickendance2AppDelegate : NSObject <UIApplicationDelegate>{
+@interface chickendance2AppDelegate : NSObject <UIApplicationDelegate,FBSessionDelegate,FBDialogDelegate>{
     NSURL *myMashUrl;
+    Facebook *facebook;
+
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) NSURL *myMashUrl;
+@property (nonatomic, retain) Facebook *facebook;
 
 
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;

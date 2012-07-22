@@ -13,7 +13,7 @@
 #import "chickendance2AppDelegate.h"
 
 @implementation recordAudioVC
-@synthesize songName, songUrl, singButton, stopButton, useButton,audioPlayer, audioRecorder,progressView;
+@synthesize songName, songUrl, singButton, stopButton, useButton,audioPlayer, audioRecorder,progressView,playButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -29,6 +29,41 @@
     [[self navigationController] pushViewController:mvc animated:YES];
     [mvc release];
     
+}
+
+-(IBAction)playRecording:(id)sender{
+    if (!audioRecorder.recording)
+    {
+        singButton.hidden = YES;
+        stopButton.hidden = YES;
+        progressView.progress = 0.0;
+        progressView.hidden = NO;
+        
+        if (audioPlayer)
+            [audioPlayer release];
+        NSError *error;
+        
+        audioPlayer = [[AVAudioPlayer alloc] 
+                       initWithContentsOfURL:audioRecorder.url                                    
+                       error:&error];
+        
+        audioPlayer.delegate = self;
+        
+        if (error)
+            NSLog(@"Error: %@", 
+                  [error localizedDescription]);
+        else
+            [self moreProgress];
+        [audioPlayer play];
+    }
+
+}
+
+-(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
+    self.singButton.hidden = NO;
+    self.useButton.hidden = NO;
+    self.stopButton.hidden = YES;
+    self.playButton.hidden = YES;
 }
 
 -(IBAction)sing:(id)sender{
@@ -115,7 +150,8 @@
         [audioPlayer stop];
     }
     useButton.hidden = NO;
-    singButton.hidden = NO;
+    playButton.hidden = NO;
+
     stopButton.hidden = YES;
     progressView.hidden = YES;
 }
@@ -222,6 +258,8 @@
 - (void)viewDidLoad
 {
     progressView.progress = 0.0;
+    self.playButton.hidden = YES;
+    self.stopButton.hidden = YES;
 
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.

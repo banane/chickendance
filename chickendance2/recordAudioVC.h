@@ -24,6 +24,7 @@
     IBOutlet UIButton *singButton;
     IBOutlet UIButton *stopButton;
     IBOutlet UIButton *useButton;
+    IBOutlet UIButton *playButton;
     
     IBOutlet UIProgressView *progressView;
     
@@ -40,6 +41,7 @@
 @property (nonatomic, retain) IBOutlet UIButton *singButton;
 @property (nonatomic, retain) IBOutlet UIButton *useButton;
 @property (nonatomic, retain) IBOutlet UIButton *stopButton;
+@property (nonatomic, retain) IBOutlet UIButton *playButton;
 
  @property (nonatomic, retain)     IBOutlet UIProgressView *progressView;
 
@@ -54,5 +56,6 @@
     
 
 -(void)sendServerAudio:(NSString *)aAudioName;
+-(IBAction)playRecording:(id)sender;
 
 @end
