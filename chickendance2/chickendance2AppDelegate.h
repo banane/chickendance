@@ -22,4 +22,6 @@
 
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 
+-(void)feedPublish;
+
 @end
