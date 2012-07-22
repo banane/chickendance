@@ -15,11 +15,13 @@
 
     IBOutlet UIView *aView;
     IBOutlet UIView *loadingView;
+    NSURL *loadMovieUrl;
 }
 
 @property (nonatomic, retain) IBOutlet UIView *aView;
 @property (nonatomic, retain) MPMoviePlayerController *player;
 @property (nonatomic, retain) IBOutlet UIView *loadingView;
+@property (nonatomic, retain) NSURL *loadMovieUrl;
 
 -(void)viewGallery;
 -(void)playMovie;

@@ -15,9 +15,11 @@
 
 @interface galleryVC : UIViewController <UIScrollViewDelegate> {
     IBOutlet UIScrollView *scrollView;
+    NSArray *movies;
 }
 
 @property (nonatomic, retain) IBOutlet UIScrollView *scrollView;
+@property (nonatomic, retain) NSArray *movies;
 
 -(IBAction)viewMovie:(id)sender;
 
