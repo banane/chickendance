@@ -39,6 +39,15 @@
      Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
      */
 }
+- (void)request:(FBRequest *)request didLoad:(id)result {
+    if ([result isKindOfClass:[NSArray class]]) {
+        result = [result objectAtIndex:0];
+    }
+    NSLog(@"Result of API call: %@", result);
+}
+- (void)request:(FBRequest *)request didFailWithError:(NSError *)error {
+    NSLog(@"Failed with error: %@", [error localizedDescription]);
+}
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
@@ -81,17 +90,29 @@
     
 }
 -(void)feedPublish{
-    NSMutableDictionary *params = 
+/*    NSMutableDictionary *params = 
     [NSMutableDictionary dictionaryWithObjectsAndKeys:
      @"My Chicken Dance!", @"name",
      @"Chicken Dance", @"caption",
      @"Record a song and dance, with Chicken Dance", @"description",
      [self.myMashUrl absoluteString], @"link",    
-     @"https://s3.amazonaws.com/chickenthumbs/chick_796430328_1508192489_mash.jpg", @"picture",  
+     @"http://s3.amazonaws.com/chickenthumbs/chick_796430328_1508192489_mash.jpg", @"picture",  
      nil];  
     [self.facebook dialog:@"feed"
                 andParams:params
-              andDelegate:self];
+              andDelegate:self];*/
+   // NSString *filePath = [[NSBundle mainBundle] pathForResource:@"sample" ofType:@"mov"];
+    NSData *videoData = [NSData dataWithContentsOfURL:self.myMashUrl];
+    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                   videoData, @"video.mov",
+                                   @"video/quicktime", @"contentType",
+                                   @"Chicken Dance!", @"title",
+                                   @"Record your sound and dance separately, we will mash it. Don't worry. It's fun.", @"description",
+                                   nil];
+    [facebook requestWithGraphPath:@"me/videos"
+                         andParams:params
+                     andHttpMethod:@"POST"
+                       andDelegate:self];
 }
 
 - (void)dealloc
