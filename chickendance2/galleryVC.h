@@ -22,5 +22,6 @@
 @property (nonatomic, retain) NSArray *movies;
 
 -(IBAction)viewMovie:(id)sender;
+-(IBAction)viewHome:(id)sender;
 
 @end

@@ -40,6 +40,11 @@
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [super viewWillAppear:animated];
+}
 
 - (void)viewDidLoad
 {

@@ -29,5 +29,6 @@
 -(void)getMashLoop;
 
 -(IBAction)shareFacebook:(id)sender;
+-(IBAction)viewHome:(id)sender;
 
 @end

@@ -80,6 +80,12 @@
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [super viewWillAppear:animated];
+}
+
 
 - (void)viewDidUnload
 {
@@ -107,6 +113,10 @@
     }
     
 }
+-(IBAction)viewHome:(id)sender{
+     [[self navigationController] popToRootViewControllerAnimated:YES];
+ }
+
 -(void)dealloc{
     [movies release];
     [scrollView release];

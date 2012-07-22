@@ -111,6 +111,10 @@
     [gvc release];    
 }
 
+-(IBAction)viewHome:(id)sender{
+    [[self navigationController] popToRootViewControllerAnimated:YES];
+}
+
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
