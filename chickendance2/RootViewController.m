@@ -49,18 +49,6 @@
     // Release any retained subviews of the main view.
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return (interfaceOrientation == UIInterfaceOrientationLandscapeLeft);
-}
-
-- (void) didRotate:(NSNotification *)notification
-
-{
-    //Maintain the camera in Landscape orientation
-    [[UIDevice currentDevice] setOrientation:UIInterfaceOrientationLandscapeLeft];
-    
-}
 - (void) viewWillAppear:(BOOL)animated
 {
     [self.navigationController setNavigationBarHidden:YES animated:animated];

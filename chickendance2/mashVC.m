@@ -28,15 +28,23 @@
     return self;
 }
 
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [super viewWillAppear:animated];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationItem.rightBarButtonItem = BARBUTTON(@"More", @selector(viewGallery));
+//    self.navigationItem.rightBarButtonItem = BARBUTTON(@"More", @selector(viewGallery));
 
     [self getMashLoop];
 
 }
 
+ 
 -(IBAction)shareOnFacebook:(id)sender{
     
     /*    
@@ -89,16 +97,18 @@
     // e.g. self.myOutlet = nil;
 }
 
--(void)viewGallery{
+-(IBAction)viewGallery:(id)sender{
     galleryVC *gvc = [[galleryVC alloc] initWithNibName:@"galleryVC" bundle:nil];
     [[self navigationController] pushViewController:gvc animated:YES];
     [gvc release];    
 }
 
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
+
 
 -(void)dealloc{
     [loadMovieUrl release];

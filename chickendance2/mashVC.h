@@ -24,7 +24,7 @@
 @property (nonatomic, retain) NSURL *loadMovieUrl;
 
 
--(void)viewGallery;
+-(IBAction)viewGallery:(id)sender;
 -(void)playMovie;
 -(void)getMashLoop;
 
