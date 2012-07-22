@@ -8,22 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RootViewController : UIViewController <UIImagePickerControllerDelegate,UINavigationControllerDelegate>{
-    BOOL videoRecorded;
-}
-
-@property BOOL videoRecorded;
+@interface RootViewController : UIViewController
 
 -(IBAction)dance:(id)sender;
-
 -(IBAction)gallery:(id)sender;
-
--(void)uploadVideo:(NSURL *)videoPath;
-
--(IBAction)singView:(id)sender;
-
--(void)sendServerVideo:(NSString *)aVideoName;
-
--(void)viewAudioRecord;
+-(IBAction)sing:(id)sender;
 
 @end

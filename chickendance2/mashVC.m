@@ -51,9 +51,9 @@
 
 -(void)getMashLoop{
     chickendance2AppDelegate *app = (chickendance2AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSString *mashurlStr =[app.myMashUrl absoluteString];
     
-    
-    if (app.myMashUrl == (id)[NSNull null]) {
+    if ([mashurlStr length]==0){
         
         [NSTimer scheduledTimerWithTimeInterval:0.5 
                                          target:self 

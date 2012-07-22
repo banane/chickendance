@@ -26,6 +26,7 @@
     IBOutlet UIButton *useButton;
     
     IBOutlet UIProgressView *progressView;
+    
 
     
 }
@@ -42,6 +43,7 @@
 
  @property (nonatomic, retain)     IBOutlet UIProgressView *progressView;
 
+
 -(IBAction)sing:(id)sender;
 -(IBAction)use:(id)sender;
 -(IBAction)stop:(id)sender;
@@ -51,5 +53,6 @@
 -(void)moreProgress;
     
 
+-(void)sendServerAudio:(NSString *)aAudioName;
 
 @end

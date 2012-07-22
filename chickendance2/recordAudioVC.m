@@ -9,6 +9,8 @@
 #import "recordAudioVC.h"
 #import <AWSiOSSDK/S3/AmazonS3Client.h>
 #import "mashVC.h"
+#import "videoVC.h"
+#import "chickendance2AppDelegate.h"
 
 @implementation recordAudioVC
 @synthesize songName, songUrl, singButton, stopButton, useButton,audioPlayer, audioRecorder,progressView;
@@ -21,6 +23,14 @@
     }
     return self;
 }
+
+-(void)viewMyMash{
+    mashVC *mvc = [[mashVC alloc] initWithNibName:@"mashVC" bundle:nil];
+    [[self navigationController] pushViewController:mvc animated:YES];
+    [mvc release];
+    
+}
+
 -(IBAction)sing:(id)sender{
     
     [self setupRecording];
@@ -69,6 +79,32 @@
         
     }
 
+}
+
+-(void)sendServerAudio:(NSString *)aAudioName{
+    
+    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+    
+    NSURL *req_url = [NSURL URLWithString:[NSString stringWithFormat:@"http://ec2-23-22-84-34.compute-1.amazonaws.com/chickendance/makemash.php?audioname=%@",aAudioName]];
+    
+    NSURLResponse *response;
+    NSError *error;
+    
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:req_url 
+                                                         cachePolicy:NSURLRequestReloadIgnoringCacheData    
+                                                     timeoutInterval:30];
+    
+    NSData *responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    
+    chickendance2AppDelegate *app = (chickendance2AppDelegate *)[[UIApplication sharedApplication] delegate];
+    
+    NSString *responseDataString = (NSString *)[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    NSLog(@"do upload response datastring: %@",responseDataString);
+    
+    NSDictionary *responseDict = (NSDictionary *)[NSJSONSerialization JSONObjectWithData:responseData options:0 error:&error];
+    app.myMashUrl = [NSURL URLWithString:[responseDict objectForKey:@"mash_path"]];
+    
+    [pool release];
 }
 
 -(IBAction)stop:(id)sender{
@@ -137,10 +173,7 @@
 
 -(IBAction)use:(id)sender{
     [self performSelectorInBackground:@selector(uploadSong) withObject:nil];
-    // go to next view
-    mashVC *mvc = [[mashVC alloc] initWithNibName:@"mashVC" bundle:nil];
-    [[self navigationController] pushViewController:mvc animated:YES];
-    [mvc release];
+    [self viewMyMash];
 }
 
 -(void)uploadSong{
@@ -162,7 +195,7 @@
              
              [s3 putObject:por];
              retValue= YES;
-         
+             [self sendServerAudio:self.songName];
          } @catch (AmazonClientException *exception) {
              NSLog(@"Upload Error: %@",exception.message);
              retValue = NO;
