@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 banane.com. All rights reserved.
 //
 // Constants used to represent your AWS Credentials.
-#define ACCESS_KEY_ID          @"AKIAJSGCJUUN4LGVN3RQ"
-#define SECRET_KEY             @"YWc7KzCoig2Qo059pUKbSD+B9zNi7VYvSAwZpycX"
+#define ACCESS_KEY_ID          @"xxx"
+#define SECRET_KEY             @"xx"
 #define TOTALDURATION_V 7
 #define BUCKET_V @"chickenvideo"
 
