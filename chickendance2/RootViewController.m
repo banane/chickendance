@@ -178,11 +178,15 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-    } else {
-        return YES;
-    }
+    return (interfaceOrientation == UIInterfaceOrientationLandscapeLeft);
+}
+
+- (void) didRotate:(NSNotification *)notification
+
+{
+    //Maintain the camera in Landscape orientation
+    [[UIDevice currentDevice] setOrientation:UIInterfaceOrientationLandscapeLeft];
+    
 }
 - (void) viewWillAppear:(BOOL)animated
 {
