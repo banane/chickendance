@@ -16,12 +16,15 @@
     IBOutlet UIView *aView;
     IBOutlet UIView *loadingView;
     NSURL *loadMovieUrl;
+    IBOutlet UIButton *shareButton;
 }
 
 @property (nonatomic, retain) IBOutlet UIView *aView;
 @property (nonatomic, retain) MPMoviePlayerController *player;
 @property (nonatomic, retain) IBOutlet UIView *loadingView;
 @property (nonatomic, retain) NSURL *loadMovieUrl;
+@property (nonatomic, retain) IBOutlet UIButton *shareButton;
+
 
 
 -(IBAction)viewGallery:(id)sender;

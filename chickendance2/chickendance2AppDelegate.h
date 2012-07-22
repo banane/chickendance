@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "FBConnect.h"
 
-@interface chickendance2AppDelegate : NSObject <UIApplicationDelegate,FBSessionDelegate,FBDialogDelegate>{
+@interface chickendance2AppDelegate : NSObject <UIApplicationDelegate,FBSessionDelegate,FBRequestDelegate, FBDialogDelegate>{
     NSURL *myMashUrl;
     Facebook *facebook;
 

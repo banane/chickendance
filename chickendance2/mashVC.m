@@ -17,7 +17,7 @@
 @end
 
 @implementation mashVC
-@synthesize aView,player,loadingView,loadMovieUrl;
+@synthesize aView,player,loadingView,loadMovieUrl,shareButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -44,20 +44,6 @@
 
 }
 
- 
--(IBAction)shareOnFacebook:(id)sender{
-    
-    /*    
-     facebook = [[Facebook alloc] initWithAppId:@"265624126886302" andDelegate:self];
-    
-     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-     if ([defaults objectForKey:@"FBAccessTokenKey"]  && [defaults objectForKey:@"FBExpirationDateKey"]) {
-        NSLog(@"defaults exist");
-        facebook.accessToken = [defaults objectForKey:@"FBAccessTokenKey"];
-        facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
-    }*/
-    
-}
 
 -(void)playMovie{
     chickendance2AppDelegate *app = (chickendance2AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -84,6 +70,7 @@
         
     } else {
         self.loadingView.hidden = YES;
+        self.shareButton.hidden = NO;
         [self playMovie];
         
     }
@@ -93,7 +80,9 @@
 -(IBAction)shareFacebook:(id)sender{
     chickendance2AppDelegate *app = (chickendance2AppDelegate *)[[UIApplication sharedApplication] delegate];
     if (![app.facebook isSessionValid]) {
-        [app.facebook authorize:nil];
+        NSArray* permissions = [[[NSArray alloc] initWithObjects:
+                                @"publish_stream", nil] autorelease];
+        [app.facebook authorize:permissions];
     }
     [app feedPublish];
 }
@@ -123,6 +112,7 @@
 
 
 -(void)dealloc{
+    [shareButton release];
     [loadMovieUrl release];
     [loadingView release];
     [aView release];
