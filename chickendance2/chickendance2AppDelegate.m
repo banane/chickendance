@@ -12,13 +12,21 @@
 
 @synthesize window = _window;
 @synthesize navigationController = _navigationController;
-@synthesize myMashUrl;
+@synthesize myMashUrl,facebook;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
     // Add the navigation controller's view to the window and display.
+    facebook = [[Facebook alloc] initWithAppId:@"265624126886302" andDelegate:self];
     self.window.rootViewController = self.navigationController;
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults objectForKey:@"FBAccessTokenKey"] 
+        && [defaults objectForKey:@"FBExpirationDateKey"]) {
+        facebook.accessToken = [defaults objectForKey:@"FBAccessTokenKey"];
+        facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
+    }
     
     [self.window makeKeyAndVisible];
     return YES;
@@ -53,7 +61,10 @@
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
 }
-
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    return [facebook handleOpenURL:url]; 
+}
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     /*
@@ -62,11 +73,32 @@
      See also applicationDidEnterBackground:.
      */
 }
+- (void)fbDidLogin {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[facebook accessToken] forKey:@"FBAccessTokenKey"];
+    [defaults setObject:[facebook expirationDate] forKey:@"FBExpirationDateKey"];
+    [defaults synchronize];
+    
+}
+-(void)feedPublish{
+    NSMutableDictionary *params = 
+    [NSMutableDictionary dictionaryWithObjectsAndKeys:
+     @"My Chicken Dance!", @"name",
+     @"Chicken Dance", @"caption",
+     @"Record a song and dance, with Chicken Dance", @"description",
+     [self.myMashUrl absoluteString], @"link",    
+     @"https://s3.amazonaws.com/chickenthumbs/chick_796430328_1508192489_mash.jpg", @"picture",  
+     nil];  
+    [self.facebook dialog:@"feed"
+                andParams:params
+              andDelegate:self];
+}
 
 - (void)dealloc
 {
     [_window release];
     [_navigationController release];
+    [facebook release];
     [super dealloc];
 }
 

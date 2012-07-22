@@ -82,6 +82,14 @@
     
 }
 
+-(IBAction)shareFacebook:(id)sender{
+    chickendance2AppDelegate *app = (chickendance2AppDelegate *)[[UIApplication sharedApplication] delegate];
+    if (![app.facebook isSessionValid]) {
+        [app.facebook authorize:nil];
+    }
+    [app feedPublish];
+}
+
 - (void)viewDidUnload
 {
     [super viewDidUnload];

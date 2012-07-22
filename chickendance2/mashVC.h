@@ -28,4 +28,6 @@
 -(void)playMovie;
 -(void)getMashLoop;
 
+-(IBAction)shareFacebook:(id)sender;
+
 @end
