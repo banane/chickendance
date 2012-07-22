@@ -21,7 +21,7 @@
 @property (nonatomic, retain) MPMoviePlayerController *player;
 @property (nonatomic, retain) IBOutlet UIView *loadingView;
 
--(IBAction)viewGallery;
+-(void)viewGallery;
 -(void)playMovie;
 -(void)getMashLoop;
 

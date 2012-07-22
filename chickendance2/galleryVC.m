@@ -7,6 +7,7 @@
 //
 
 #import "galleryVC.h"
+#import "chickendance2AppDelegate.h"
 
 @interface galleryVC ()
 
@@ -37,9 +38,11 @@
         S3ListObjectsResponse *resp = [s3 listObjects:req];
         
         NSMutableArray* objectSummaries = resp.listObjectsResult.objectSummaries;  
-        
-        int w = 163;
-        int h = 194;
+        CGRect fullScreenRect=[[UIScreen mainScreen] applicationFrame];
+        int width = fullScreenRect.size.width;
+        int dimension = width/4;
+
+
         int row = 0;
         int col = 0;
         
@@ -48,27 +51,31 @@
             NSString *thumbfile = [NSString stringWithFormat:@"https://s3.amazonaws.com/chickenthumbs/%@",movieThumb];
             UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:thumbfile]]];
 
-            UIButton *btn = [[UIButton alloc] initWithFrame: CGRectMake(col*w,row*h,w,h)];
-            [btn setImage:image forState:UIControlStateNormal];
+            UIButton *btn = [[UIButton alloc] initWithFrame: CGRectMake(col*dimension,row*dimension,dimension,dimension)];
+            
+            [btn setBackgroundImage:image forState:UIControlStateNormal];
             
             [btn addTarget:self 
                        action:@selector(viewMovie:) forControlEvents:UIControlEventTouchUpInside];
 
             
             [self.scrollView addSubview:btn];
-            
-            if(col==4){
+            [btn release];
+            if(col==3){
                 col=0;
                 row+=1;
             } else {
                 col+=1;
             }
         }
+        float height = (row * dimension);
+        self.scrollView.contentSize = CGSizeMake(width,height);
     }
     @catch (NSException *exception) {
         NSLog(@"Cannot list S3 %@",exception);
     }
 }
+
 
 - (void)viewDidUnload
 {
@@ -82,6 +89,9 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 -(IBAction)viewMovie:(id)sender{
+    chickendance2AppDelegate *app = (chickendance2AppDelegate *)[[UIApplication sharedApplication] delegate];
+//    app.mashUrl = [
+    
     // test
 }
 -(void)dealloc{

@@ -74,7 +74,7 @@
     // e.g. self.myOutlet = nil;
 }
 
--(IBAction)viewGallery{
+-(void)viewGallery{
     galleryVC *gvc = [[galleryVC alloc] initWithNibName:@"galleryVC" bundle:nil];
     [[self navigationController] pushViewController:gvc animated:YES];
     [gvc release];    
