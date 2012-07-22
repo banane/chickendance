@@ -17,7 +17,7 @@
 @end
 
 @implementation mashVC
-@synthesize aView,player,loadingView;
+@synthesize aView,player,loadingView,loadMovieUrl;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -32,6 +32,7 @@
 {
     [super viewDidLoad];
     self.navigationItem.rightBarButtonItem = BARBUTTON(@"More", @selector(viewGallery));
+
     [self getMashLoop];
 
 }
@@ -74,7 +75,7 @@
     // e.g. self.myOutlet = nil;
 }
 
--(IBAction)viewGallery{
+-(void)viewGallery{
     galleryVC *gvc = [[galleryVC alloc] initWithNibName:@"galleryVC" bundle:nil];
     [[self navigationController] pushViewController:gvc animated:YES];
     [gvc release];    
@@ -86,8 +87,10 @@
 }
 
 -(void)dealloc{
+    [loadMovieUrl release];
     [loadingView release];
     [aView release];
+    [player release];
     [super dealloc];
 }
 

@@ -7,13 +7,15 @@
 //
 
 #import "galleryVC.h"
+#import "chickendance2AppDelegate.h"
+#import "viewMovie.h"
 
 @interface galleryVC ()
 
 @end
 
 @implementation galleryVC
-@synthesize scrollView;
+@synthesize scrollView, movies;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -27,6 +29,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"Chicken Mashes";
     NSLog(@"in load view");
     AmazonS3Client *s3 = [[[AmazonS3Client alloc] initWithAccessKey:ACCESS_KEY_ID withSecretKey:SECRET_KEY] autorelease];
     
@@ -37,9 +40,11 @@
         S3ListObjectsResponse *resp = [s3 listObjects:req];
         
         NSMutableArray* objectSummaries = resp.listObjectsResult.objectSummaries;  
-        
-        int w = 163;
-        int h = 194;
+        CGRect fullScreenRect=[[UIScreen mainScreen] applicationFrame];
+        int width = fullScreenRect.size.width;
+        int dimension = width/4;
+        int counter=0;
+
         int row = 0;
         int col = 0;
         
@@ -48,27 +53,33 @@
             NSString *thumbfile = [NSString stringWithFormat:@"https://s3.amazonaws.com/chickenthumbs/%@",movieThumb];
             UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:thumbfile]]];
 
-            UIButton *btn = [[UIButton alloc] initWithFrame: CGRectMake(col*w,row*h,w,h)];
-            [btn setImage:image forState:UIControlStateNormal];
+            UIButton *btn = [[UIButton alloc] initWithFrame: CGRectMake(col*dimension,row*dimension,dimension,dimension)];
+            
+            [btn setBackgroundImage:image forState:UIControlStateNormal];
             
             [btn addTarget:self 
                        action:@selector(viewMovie:) forControlEvents:UIControlEventTouchUpInside];
-
+            btn.tag = counter;
             
             [self.scrollView addSubview:btn];
-            
-            if(col==4){
+            [btn release];
+            if(col==3){
                 col=0;
                 row+=1;
             } else {
                 col+=1;
             }
+            counter +=1;
         }
+        float height = (row * dimension);
+        self.scrollView.contentSize = CGSizeMake(width,height);
+        self.movies = objectSummaries;
     }
     @catch (NSException *exception) {
         NSLog(@"Cannot list S3 %@",exception);
     }
 }
+
 
 - (void)viewDidUnload
 {
@@ -82,9 +93,22 @@
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 -(IBAction)viewMovie:(id)sender{
-    // test
+    NSString *thumbname = [NSString stringWithFormat:@"%@",[self.movies objectAtIndex:[sender tag]]];
+    if([thumbname length]>0){
+        NSArray *thumbnameArray = [thumbname componentsSeparatedByString:@"."];
+        NSString *thumbMovieString = [NSString stringWithFormat:@"http://s3.amazonaws.com/chickenmash/%@.mov",[thumbnameArray objectAtIndex:0]];
+        NSURL *thumbMovieUrl = [NSURL URLWithString:thumbMovieString];
+        
+        
+        viewMovie *vmc = [[viewMovie alloc] initWithNibName:@"viewMovie" bundle:nil];
+        vmc.movieUrl = thumbMovieUrl; 
+        [[self navigationController] pushViewController:vmc animated:YES];
+        [vmc release];
+    }
+    
 }
 -(void)dealloc{
+    [movies release];
     [scrollView release];
     [super dealloc];
 }
